@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { FaRegFileAlt } from "react-icons/fa";
@@ -7,6 +8,7 @@ import { GiArmorUpgrade } from "react-icons/gi";
 import Image from "next/image";
 
 const Sidebar = () => {
+  
   type menutypes = {
     id: number;
     name: string;
@@ -35,6 +37,13 @@ const Sidebar = () => {
   ];
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const router = useRouter();
+
+  const handleRoute = (path: string,id:number) => {
+    setActiveIndex(id);
+    router.push(path);
+  }
+
   return (
     <div className="shadow-lg border-r h-full rounded-lg">
       <div className="p-5 border-b flex gap-2 items-center">
@@ -50,7 +59,7 @@ const Sidebar = () => {
                 ? "bg-blue-100 text-primary"
                 : "text-gray-600"
             }`}
-            onClick={() => setActiveIndex(item.id)}
+            onClick={() =>handleRoute(item.path,item.id)}
           >
             {item.icon}
             <h2 className="font-bold text-2xl">{item.name}</h2>
