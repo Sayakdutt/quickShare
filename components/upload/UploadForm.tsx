@@ -4,8 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import FilePreview from "./FilePreview";
+import ProgressBar from "./ProgressBar";
 
-const UploadForm = () => {
+interface UploadFormProps {
+  uploadClick: () => void;
+  progress: number | undefined;
+}
+
+const UploadForm = ({ uploadBtnClick, progress }: any) => {
   const [file, setFile] = useState<File | null>();
   const [errorMsg, setErrorMsg] = useState<boolean>(false);
 
@@ -85,14 +91,21 @@ const UploadForm = () => {
       />
       {errorMsg ? <AlertMsg /> : null}
 
-      
-      {file ? <FilePreview file={file} removeFile={() => setFile(null)} /> : null}
-      <button
-        disabled={!file}
-        className="p-2 bg-primary text-white w-[30%] rounded-full mt-5 hover:bg-green-400 disabled:bg-gray-400"
-      >
-        Upload
-      </button>
+      {file ? (
+        <FilePreview file={file} removeFile={() => setFile(null)} />
+      ) : null}
+
+      {progress > 0 ? (
+        <ProgressBar progress={progress} />
+      ) : (
+        <button
+          disabled={!file}
+          className="p-2 bg-primary text-white w-[30%] rounded-full mt-5 hover:bg-green-400 disabled:bg-gray-400"
+          onClick={() => uploadBtnClick(file)}
+        >
+          Upload
+        </button>
+      )}
     </div>
   );
 };
